@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Leveraging Esri's Map SDK and React for Dynamic GIS Solutions</title>
+
+		<meta name="description" content="">
+		<meta name="author" content="Ryan Ulsberger">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		
+	</head>
+	<style>
+		.reveal pre code {
+    		font-size: .5em;  /* Adjust as needed */
+		}
+		.no-bullets { list-style-type:none; }
+	</style>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h3>Leveraging Esri's Map SDK and React for Dynamic GIS Solutions</h3>
+					<p>
+						<small>Created by <a href="http://ulsberger.app">Ryan Ulsberger</a></small>
+					</p>
+					<p><small>March 24th, 2025</small> </p>
+
+					<aside class="notes">
+						Good morning everyone! Thank you for joing this morning and I hope that you have your coffee handy.
+						This morning I am going to discuss a project that I am currently working on which I think is pertinent 
+						to the work that will be done on this team. This is also very fresh as I was only able to uncover some 
+						of the potential obstacles that I have encountered with the help of some lovely ESRI employees at the
+						ESRI Developer and Technology Summit. 
+					</aside>
+				</section>
+
+
+				<section>
+					<h2>The Problem</h2>
+					<section>
+						<p>
+							Web App Builder and the ArcGIS Maps SDK V.3
+						</p>
+						<img height="300px" src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExd2FoeHQ1Y2ZuYzgxbzQ0NXpsc3YyZ2ZmY2luaHQwMXc3eTBraWFlbSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/UkFNy2JFu03D6RHRaP/giphy.gif" alt="Sailing into the sunset">
+						<aside class="notes">
+							So, the problems at Pierce County are not unique...
+							If you listened to questions throughout the Dev Summit, one rang out consistenly.
+
+							What Do I do with my Web App Builder Applications, and what should I develop my next
+							applications with. 
+						</aside>
+					</section>
+					<section>
+						<div style="display: flex; justify-content: center; align-items: center;">
+						  <img class="fragment fade-right" src="https://www.esri.com/content/dam/esrisites/en-us/common/icons/product-logos/ArcGIS_Experience_Builder_220.png" style="margin-right: 10px;"/>
+						  <span class="fragment fade-in" style="margin: 0 10px;">vs</span>
+						  <img height="200px" class="fragment fade-left" src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" style="margin-left: 10px;"/>
+						</div>
+					  
+						<aside class="notes">
+						  So the cage match battle begins with Experience Builder on the left  
+						  and developing custom applications using the new Maps SDK on the right. 
+						</aside>
+					  </section>
+					  
+					<section>
+					  <h3 data-auto-animate>Experience Builder Development</h3>
+
+					  <ul>
+						  <li class="fragment">Widgets are <strong>strongly coupled</strong> with applications.</li>
+						  <li class="fragment">By making them more <strong>flexible</strong>, we can use them across projects.</li>
+						  <li class="fragment">We were having to write a lot of boiler plate to work with data-actions.</li>
+					  </ul>
+					  <aside class="notes">
+						At Pierce County, our work with Experience Builder has been effective, and now we are looking at ways to build on that success:
+
+						currently, Pierce County is developing custom widgets to replatform our applications from Web App Builder to Expereience Builder. 
+						And while we have had successes thus far, we are starting to experience the limitations of doing this work. 
+
+						As a fresh body working on these projects, I made a few observations which made me question our plan for development in EXB.
+						- Widgets are <strong>strongly coupled</strong> with applications.
+							-- this means that our logic is strongly related to our applications, meaning we are duplicating code that is specific to our apps.
+						- By making them more <strong>flexible</strong>, we can use them across projects.
+						- We were having to write a lot of boiler plate to work with data-actions.
+							-- there is a lot of boiler plate that is necessary for us to work with Experience Builder Widgets. We are forced to use the ESRI choices
+							for how to handle state management and other things.
+
+					  </aside>
+					</section>
+					<!-- Sub Slide 2: Looking Ahead -->
+					<section>
+					  <h3 data-auto-animate>Looking Ahead</h3>
+					  <p>While Experience Builder remains a great tool, we see opportunities to prepare for:</p>
+					  <ul>
+						  <li class="fragment"><strong>ESRI Maps SDK</strong> standalone development.</li>
+						  <li class="fragment">Avoiding unnecessary rework by <strong>future-proofing</strong> our work.</li>
+						  <li class="fragment">Building components that <strong>seamlessly transition</strong> into future projects.</li>
+					  </ul>
+					  <aside class="notes">
+						So my teammates and I have agreed that Experience Builder may not be a long term solution. 
+						However, there is a concern about us replatforming our applications while our current applications are unsupported by ESRI. 
+						
+						One thought is that get the applications built in expereience builder and then after we have moved off the 
+						ArcGIS Maps SDK 3x, then we can rebuild these applications with 4x API. 
+
+						However, that means that we are duplicating our work, and accumulating technical debt. We are creating work for ourselves in the future.
+
+						We don't want to do that. So what are some ways that we can avoid this.
+					  </aside>
+				  </section>
+				</section>
+
+				<!-- Slide 3: Proposed Solution -->
+				<section>
+					<h2>Proposed Solution</h2>
+					<p>What if we proactively:</p>
+					<ul>
+						<li><strong>Develop reusable React components</strong> that work in both Experience Builder and standalone apps?</li>
+						<li>Reduce <strong>duplicate development</strong> while maintaining flexibility.</li>
+						<li>Standardize <strong>UI & logic</strong> across projects.</li>
+					</ul>
+					<aside class="notes">
+						So the question is then, 
+
+						what if we could put our bets on both tools?
+
+						Experience Builder is based on the Maps SDK, and it has allows for the integration of Calcite Components even though 
+						EXB doesn't utilize them in its own code. 
+
+						instead of putting all our eggs in on basket, could we build a pure React Component or in the future, our own web components
+						and then incorporate them into Expereince Builder?
+
+						Everything in theory says that this should work. And thankfully I had read some posts 
+						from when Experience Builder was newish about using React Components without the SDK in EXB. So the question was, could it be done with 
+						the widgets using the Maps SDK and Calcite?
+
+						This would allow us to: 
+						- Avoiding unnecessary rework by <strong>future-proofing</strong> our work.
+						- Building components that <strong>seamlessly transition</strong> into future projects, whether they are in EXB or a framework.
+
+					  </aside>
+				</section>
+
+			<!-- Slide 4: Proof of Concept -->
+				<section>
+					<section data-auto-animate>
+						<h2>Proof of Concept</h2>
+						<p>Introducing the <strong>IdentifyAll Widget</strong>:</p>
+						<ul>
+							<li class="fragment">Demonstrates <strong>decoupled development</strong> that enhances flexibility.</li>
+							<li class="fragment">Functions in both <strong>Experience Builder</strong> and standalone <strong>ESRI Maps SDK apps</strong>.</li>
+							<li class="fragment">Encapsulates core functionality into <strong>reusable React components</strong>.</li>
+							
+						</ul>
+					</section>
+					<section data-auto-animate>
+						<h2>What existed</h2>
+						<div>
+							<img height="500px" src="./assets/IdentifyAll_Query.png"></img>
+							<img height="500px" src="./assets/IdentifyAll_Results.png"></img>
+						</div>
+					</section>
+					<section data-auto-animate>
+						<h2>Why Reusable React Components?</h2>
+						<p>Key benefits:</p>
+						<ol start="1">
+							<li class="fragment"><strong>Reduce duplicate development</strong></li>
+							<li class="fragment"><strong>Ensure smooth future transitions</strong></li>
+						</ol>
+					</section>
+					<section data-auto-animate="">
+						<h2>💡 Preparing for the Transition to Web Development</h2>
+						<li class="fragment no-bullets">✅ Most of our UI logic will already be built—just connect it to a new framework.</li>
+						<li class="fragment no-bullets">✅ No need to start from scratch, saving time and effort.</li>
+						<li class="fragment no-bullets">✅ We can transition gradually, instead of all at once.</li>
+					</section>
+				</section>
+
+				<!-- Slide 8: Live Demo -->
+				<section>
+					<h2>Live Demo</h2>
+					<ul>
+						<li class="fragment">Break down components: <strong>IdentifyAllWidget, DrawWidget, FeatureListWidget</strong>.</li>
+						<li class="fragment">Demonstrate the use of the components within a <strong>Pure React Application.</strong></li>
+						<li class="fragment">Deploy the Components as a <strong>Package</strong>.</li>
+						<li class="fragment">Install and render the component in <strong>Experience Builder</strong>.</li>
+					</ul>
+				</section>
+
+				<section data-auto-animate>
+					<h2 data-id="code-title">Vite Config</h2>
+					<pre data-id="code-animation"><code class="hljs json" data-trim data-line-numbers="|17-21|25"><script type="text/template">
+						import { defineConfig } from 'vite';
+						import react from '@vitejs/plugin-react';
+						import path from 'path';
+						
+						export default defineConfig({
+						  plugins: [react()],
+						  resolve: {
+							alias: {
+							  "@arcgis/core": path.resolve("node_modules/@arcgis/core"), // Explicit path
+							},
+						  },
+						  optimizeDeps: {
+							exclude: ["@arcgis/core"]
+						  },
+						  build: {
+							lib: {
+							  entry: {
+								DrawWidget: path.resolve(__dirname, 'src/components/DrawWidget/index.ts'),
+								FeatureListWidget: path.resolve(__dirname, 'src/components/FeatureListWidget/index.ts'),
+								IdentifyAllWidget: path.resolve(__dirname, 'src/components/IdentifyAllWidget/index.ts'),
+							  },
+							  formats: ['es', 'cjs'], // Generate ES and CommonJS modules
+							},
+							rollupOptions: {
+							  external: ['react', 'react-dom', '@arcgis/core', '@esri/calcite-components-react'], // Prevent bundling of peer dependencies
+							  output: {
+								entryFileNames: '[name].[format].js',
+								dir: 'dist',
+								globals: {
+								  react: 'React',
+								  'react-dom': 'ReactDOM',
+								  '@arcgis/core': 'arcgis',
+								  '@esri/calcite-components-react': 'calcite',
+								},
+							  },
+							},
+						  },
+						});						
+					</script></code></pre>
+				</section>
+
+				<section>
+					<h2>Installing in Experience Builder</h2>
+					<section>
+						<pre data-id="code-animation"><code class="hljs bash" data-trim data-line-numbers=""><script type="text/template">
+							npm install git+https://ryanulsberger@bitbucket.org/piercecountywa-ss/react_components.git#Deploy		
+						</script></code></pre>
+						<aside class="notes">
+							Now let’s see how **Experience Builder can consume the component just like any other React project**.  
+	
+							Instead of copying code manually, I can install the component directly from **our GitHub repo**.  
+							
+							npm install git+https://ryanulsberger@bitbucket.org/piercecountywa-ss/react_components.git#Deploy
+							
+							- This means **Experience Builder can now use our reusable components**, but so can **any other React-based project**.  
+							- We don’t have to rewrite the same logic multiple times—we can **share updates easily** across all apps. 
+	
+							I also want to highlight that I learned that there are ways to share code between widgets that I just learned about from 
+							the Dev Summit. The difference is that in EXB I have to follow an exact folder structure to make the code accessible, and 
+							in this method, I can keep my components outside of the EXB Ecosystem making them more accessible to use in Pure React Apps.
+						</aside>
+					</section>
+					
+				</section>
+
+				<section>
+					<h2>Expereince Builder</h2>
+					<section>
+						<pre data-id="code-animation"><code class="hljs javascript" data-trim><script type="text/template">
+							import { React, FormattedMessage, css, jsx } from 'jimu-core'
+							import { type AllWidgetSettingProps } from 'jimu-for-builder'
+							import {
+							MapWidgetSelector,
+							SettingSection,
+							SettingRow
+							} from 'jimu-ui/advanced/setting-components'
+							import { Switch } from 'jimu-ui'
+							import { type IMConfig } from '../config'
+							import defaultI18nMessages from './translations/default'
+
+							export default function (props: AllWidgetSettingProps<IMConfig>) {
+
+							const onMapWidgetSelected = (useMapWidgetIds: string[]) => {
+								props.onSettingChange({
+								id: props.id,
+								useMapWidgetIds: useMapWidgetIds
+								})
+							}
+
+							const style = css`
+								.widget-setting-get-map-coordinates {
+									.checkbox-row {
+									display: flex;
+									justify-content: space-between;
+									margin-bottom: 8px;
+									}
+								}
+								`
+							return (
+								<div css={style}>
+								<div className="widget-setting-get-map-coordinates">
+									<SettingSection
+									className="map-selector-section"
+									title={props.intl.formatMessage({
+										id: 'mapWidgetLabel',
+										defaultMessage: defaultI18nMessages.selectMapWidget
+									})}
+									>
+									<SettingRow>
+										<MapWidgetSelector
+										onSelect={onMapWidgetSelected}
+										useMapWidgetIds={props.useMapWidgetIds}
+										/>
+									</SettingRow>
+									</SettingSection>
+
+								</div>
+								</div>
+							)
+							};
+						</script></code></pre>
+						<aside class="notes">
+							Using some basic widget templates, I was able to set up the folder structure of the wrapper around my component. The only prop that the identifyAll widget
+							needs is an instance of a WebMap. 
+
+							To make this configurable I was just able to create a drop down to select the Map Widget that will
+							be passed into the component for it to do it work.
+						</aside>
+					</section>
+					<section>
+						<pre data-id="code-animation"><code class="hljs javascript" data-trim data-line-numbers="6|36"><script type="text/template">
+							import { React } from 'jimu-core'
+							import { type AllWidgetProps, jsx } from 'jimu-core'
+							import { type IMConfig } from '../../config'
+							import { type JimuMapView, JimuMapViewComponent } from 'jimu-arcgis'
+							import MapView from 'esri/views/MapView'
+							import {IdentifyAllWidget} from './components/IdentifyAllWidget'
+							
+							import './widget.css'
+							
+							const { useState } = React
+							
+							export default function Widget(props: AllWidgetProps<IMConfig>) {
+							  const [mapView, setMapView] = useState<JimuMapView | null>(null);
+							
+							  const activeViewChangeHandler = (jmv: JimuMapView) => {
+								if (jmv) {
+								  setMapView(jmv);x
+								  jmv.view.when(() => {
+									jmv.view.popup.dockEnabled = true;
+									jmv.view.popup.dockOptions = {
+									  buttonEnabled: false,
+									  breakpoint: false
+									};
+								  });
+								}
+							  }
+							
+							  return (
+								<div className="widget-IdentifyAll jimu-widget m-2">
+								  {props.useMapWidgetIds && props.useMapWidgetIds.length === 1 && (
+									<>
+									  <JimuMapViewComponent
+										useMapWidgetId={props.useMapWidgetIds[0]}
+										onActiveViewChange={activeViewChangeHandler}
+									  />
+									  {mapView && <IdentifyAllWidget mapView={mapView.view as unknown as MapView} />}
+									</>
+								  )}
+								</div>
+							  )
+							}
+											
+						</script></code></pre>
+						<aside class="notes">
+							In the same way as before, we can interact with each module from our package. I just need to make sure that the data is passed to the components correctly for it to render. 
+	
+							In some cases, this means we might have to do some data manipulation to massage the data into the right formats. 
+							In the LayersList Widget, it seems like sometimes the ESRI devs will create new MapSDK objects and hide them in the application so not to mess with the Jimu objects. 
+							Whats great is that we can do the same thing in our widgets to pass to these components. 
+	
+							While talking about the ESRI Widget I wanted to highlight that ESRI is already working with pure components inside the widgets the produce. 
+							Looking at the Elevation Profile Widget, ESRI devs are breaking thier code into these smaller chunks of code within their widgets, such as creating the statistics and charting utility. 
+							The difference that we are doing here is moving our development into a separate repo to try to make our components reusable and accessible.
+						</aside>
+					</section>
+				</section>
+
+
+
+				<section>
+					<h2>⚠️ Challenges Faced</h2>
+					<section>
+						<pre><code class="language-js">
+							Uncaught TypeError: esri.module.SpatialReference is not an instance of esri.module.SpatialReference
+						</code></pre>
+	
+						<img height="300px" src="https://media.giphy.com/media/L2qukNXGjccyuAYd3W/giphy.gif?cid=790b7611l9hdpabrup3dwklrev11hpn9ywasd7de2fn0uo5i&ep=v1_gifs_search&rid=giphy.gif&ct=g" alt="Schitts Creek - What Am I Looking At?">
+	
+						
+						<aside class="notes">
+							So unfortnately, I have not invested in my own ArcGIS license, so I am unable to pull up a working version of 
+							Expereince Builder to demo this part of the application to you. However, I can tell you that this does work!
+							
+							Just not 100%. 
+
+							The widget renders correctly, but parts of the sketch widget and rendering of the items in the FeatureList are 
+							not working as expected. Interestingly, even though the sketch geometry does not show up in the map, the widget 
+							still is executing queries against the WebMap, and I can see the results. The issue occurs when working with certain
+							parts of the Maps SDK, resulting in errors such as the one above. There are additional errors for other parts of
+							Maps SDK module as well.
+						</aside>
+					</section>
+					<section>
+
+						<ul class="no-bullets">
+							<li class="no-bullets">🤖 ChatGPT</li>
+							<li class="no-bullets">🔍 ESRI Support</li>
+							<li class="no-bullets">💬 Ask a Dev</li>
+						</ul>
+
+						<aside class="notes">
+							So to debug this, I started with what any reasonable person would do. Ask ChatGPT. 
+							
+							ChatGPT suggested that I actally had two different versions of the Maps SDK installed. 
+							But as I showed earlier, I knew that I needed to have the versions of the Maps SDK for Javascript 
+							explicitly set to match the version of Expereience Builder. So I had already covered these bases. 
+
+							I then opened a software support ticket with ESRI, and they were able to replicate the behavior,
+							but also were unable to provide any explainations.
+
+							Thankylly, I attened the Developer Summit which I was able to learn that Experience Builder utilizes
+							the CDN for calling the Maps SDK and Calcite. So when I load packages that utilize the Maps SDK even
+							as a peer dependency, my components are still looking for the physical location of these files. The
+							reason I get a half working application is that the the JimuMapView is instantiated with the CDN first
+							before the IdentifyAll widgets. That's why I am getting a peice-meal working widget.
+
+							Special thanks to Rene for helping narrow down this issue.
+						</aside>
+					</section>
+				</section>
+
+				<section>
+					<h2>🚀 Next Steps</h2>
+
+					<ul>
+						<li>Develop a simple widget to replicate behavior</li>
+						<li>Explore using the CDN when packaging components</li>
+					</ul>
+
+					<aside class="notes">
+						At the Dev Summit, I made rounds between the Maps SDK folks and the Expereince Builder booths, and one name 
+						kept on coming up, Gavin Rehkemper. I was able to speak to Gavin and we verified the issues. Turns out this was on 
+						his todo list to be able to identify a solution to this problem. Gavin and I plan on working together to try to identify 
+						work around to this problem as the migration to web-components based development patterns means that this pattern is 
+						going to be used more often. 
+					</aside>
+				</section>
+
+
+				<section>
+					<h2>💡 Recap</h2>
+					<p>We know Experience Builder isn’t our long-term solution...</p>
+					<li class="fragment no-bullets">✅ Explored the use of react components in Expereience builder.</li>
+					<li class="fragment no-bullets">✅ No need to start from scratch, saving time and effort.</li>
+					<li class="fragment no-bullets">✅ We can transition gradually, instead of all at once.</li>
+
+					<aside class="notes">
+
+					</aside>
+				</section>
+
+				<section>
+					<h2>Questions?</h2>
+					<img height="300px" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdDExZWJ6cGpmYjQyb2wxYjNlcDVhbnIxOHN4enQzb3VhdHAyc2pjeiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/DUrdT2xEmJWbS/giphy.gif" alt="The Office - Yeah, I have a lot of questions.">
+	
+					
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/zoom/zoom.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/search/search.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+
+			// Also available as an ES module, see:
+			// https://revealjs.com/initialization/
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+
+		</script>
+
+	</body>
+</html>
