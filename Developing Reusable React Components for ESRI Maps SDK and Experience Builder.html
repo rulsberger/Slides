@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sprint Planning Kickoff</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/theme/moon.min.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+        <!-- Slide 0: Title -->
+        <section>
+            <h1>Reusable React Components</h1>
+            <h3>for ESRI Maps SDK & Experience Builder</h3>
+            <p><small>Presented by Ryan Ulsberger</small></p>
+        </section>
+
+        <!-- Slide 1: Introduction -->
+        <section>
+            <h2>Introduction</h2>
+            <section>
+              <h3 data-auto-animate>Experience Builder Development</h3>
+              <p>Thanks for joining today’s discussion! Our work with Experience Builder has been effective, and now we’re looking at ways to build on that success:</p>
+              <ul>
+                  <li class="fragment">Widgets are <strong>well-integrated</strong> into applications.</li>
+                  <li class="fragment">By making them more <strong>flexible</strong>, we can use them across projects.</li>
+                  <li class="fragment">A <strong>reusable approach</strong> helps us streamline development.</li>
+              </ul>
+            </section>
+            <!-- Sub Slide 2: Looking Ahead -->
+            <section>
+              <h3 data-auto-animate>Looking Ahead</h3>
+              <p>While Experience Builder remains a great tool, we see opportunities to prepare for:</p>
+              <ul>
+                  <li class="fragment"><strong>ESRI Maps SDK</strong> standalone development.</li>
+                  <li class="fragment">Avoiding unnecessary rework by <strong>future-proofing</strong> our work.</li>
+                  <li class="fragment">Building components that <strong>seamlessly transition</strong> into future projects.</li>
+              </ul>
+          </section>
+        </section>
+
+        <!-- Slide 3: Proposed Solution -->
+        <section>
+            <h2>Proposed Solution</h2>
+            <p>What if we proactively:</p>
+            <ul>
+                <li><strong>Develop reusable React components</strong> that work in both Experience Builder and standalone apps?</li>
+                <li>Reduce <strong>duplicate development</strong> while maintaining flexibility.</li>
+                <li>Standardize <strong>UI & logic</strong> across projects.</li>
+            </ul>
+        </section>
+
+        <!-- Slide 4: Proof of Concept -->
+         <section>
+          <section>
+              <h2>Proof of Concept</h2>
+              <p>Introducing the <strong>IdentifyAll Widget</strong>:</p>
+              <ul>
+                  <li class="fragment">Demonstrates <strong>decoupled development</strong> that enhances flexibility.</li>
+                  <li class="fragment">Functions in both <strong>Experience Builder</strong> and standalone <strong>ESRI Maps SDK apps</strong>.</li>
+                  <li class="fragment">Encapsulates core functionality into <strong>reusable React components</strong>.</li>
+                  
+              </ul>
+          </section>
+          <!-- Slide 4.1: Why Reusable React Components? -->
+          <section>
+            <h2>Why Reusable React Components?</h2>
+            <p>Key benefits:</p>
+            <ol start="1">
+                <li class="fragment"><strong>Reduce duplicate development</strong></li>
+                <li class="fragment"><strong>Ensure smooth future transitions</strong></li>
+            </ol>
+          </section>
+          <!-- Slide 4.2: Preparing for the Transition to Web Development -->
+          <section>
+            <h2>💡 Preparing for the Transition to Web Development</h2>
+            <p>We know Experience Builder isn’t our long-term solution...</p>
+            <li class="fragment">✅ Most of our UI logic will already be built—just connect it to a new framework.</li>
+            <li class="fragment">✅ No need to start from scratch, saving time and effort.</li>
+            <li class="fragment">✅ We can transition gradually, instead of all at once.</li>
+          </section>
+          <!-- Slide 4.3: Addressing Concerns -->
+          <section>
+            <h2>Addressing Concerns</h2>
+            <p>Is React a viable long-term solution?</p>
+            <ul>
+                <li class="fragment">✅ <strong>ESRI actively supports React</strong>, ensuring compatibility.</li>
+                <li class="fragment">✅ <strong>React components can integrate into various frameworks</strong>.</li>
+                <li class="fragment">✅ <strong>React provides a stable and widely adopted API</strong>.</li>
+            </ul>
+          </section>
+         </section>
+
+        <!-- Slide 8: Live Demo -->
+        <section>
+            <h2>Live Demo</h2>
+            <ul>
+                <li class="fragment">Break down components: <strong>IdentifyAllWidget, DrawWidget, FeatureListWidget</strong>.</li>
+                <li class="fragment">Run unit tests to show <strong>Experience Builder independence</strong>.</li>
+                <li class="fragment">Demonstrate the use of the components within a <strong>Pure React Application.</strong></li>
+                <li class="fragment">Deploy the Components as a <strong>Package</strong>.</li>
+                <li class="fragment">Install and render the component in <strong>Experience Builder</strong>.</li>
+            </ul>
+        </section>
+
+        <!-- Slide 9: Pros & Cons -->
+        <section>
+            <h2>Pros & Considerations</h2>
+            <section>
+              <h3>✅ Advantages</h3>
+              <ul>
+                <li class="fragment fade-in">Less Code Duplication  </li>
+                <li class="fragment fade-up">Easier Future Transition  </li>
+                <li class="fragment fade-in">Improved Maintainability  </li>
+                <li class="fragment fade-down">More Modern Development Workflow  </li>
+                <li class="fragment zoom-in">Increased Flexibility  </li>
+                <li class="fragment fade-up">Future-Proofing Our Development  </li>
+                <li class="fragment zoom-in">Improved Testability  </li>
+                <li class="fragment fade-in">Better Collaboration & Code Reusability  </li>
+              </ul>
+            </section>
+            <section>
+              <h3>⚠️ Considerations</h3>
+              <ul>
+                  <li>Experience Builder wraps the <strong>ESRI Maps SDK</strong>, so integration should be planned carefully.</li>
+                  <li>Some <strong>dependency management</strong> challenges to address.</li>
+                  <li>A learning curve as we refine new workflows.</li>
+              </ul>
+            </section>
+
+        </section>
+
+        <!-- Slide 10: Key Takeaways -->
+        <section>
+            <h2>Key Takeaways</h2>
+            <ul>
+                <li style="list-style-type: none;" class="fragment">✅ <strong>Reusable React components streamline development.</strong></li>
+                <li style="list-style-type: none;" class="fragment">✅ <strong>Future-proofing</strong> ensures smoother transitions.</li>
+                <li style="list-style-type: none;" class="fragment">✅ <strong>Alignment with ESRI’s direction</strong> keeps us on track.</li>
+                <li style="list-style-type: none;" class="fragment">✅ Challenges exist, but they are <strong>manageable and worthwhile</strong>.</li>
+            </ul>
+        </section>
+
+        <!-- Slide 11: Conclusion -->
+        <section>
+            <h2>Final Thoughts</h2>
+            <p>By investing in reusable React components today, we:</p>
+            <ul>
+                <li><strong>Save time</strong> by reducing redundant development.</li>
+                <li><strong>Ensure long-term flexibility</strong> in application design.</li>
+                <li><strong>Align with ESRI’s evolving approach</strong> to modern web development.</li>
+            </ul>
+        </section>
+
+    </div>
+</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.4.0/reveal.min.js"></script>
+  <script>
+    Reveal.initialize(
+      { slideNumber: true }
+    );
+  </script>
+</body>
+</html>
